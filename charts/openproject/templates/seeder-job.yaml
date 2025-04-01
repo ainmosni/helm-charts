@@ -58,7 +58,7 @@ spec:
           volumeMounts:
             {{- include "openproject.tmpVolumeMounts" . | indent 12 }}
           {{- include "openproject.containerSecurityContext" . | indent 10 }}
-        - name: check-db-ready
+        - name: check-db-ready-this-is-my-edit
           image: "{{ .Values.dbInit.image.registry }}/{{ .Values.dbInit.image.repository }}:{{ .Values.dbInit.image.tag }}"
           imagePullPolicy: {{ .Values.dbInit.image.imagePullPolicy }}
           command: [
