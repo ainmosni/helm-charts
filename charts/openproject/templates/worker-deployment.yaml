@@ -56,6 +56,23 @@ spec:
         {{- end }}
         {{- include "openproject.extraVolumes" . | indent 8 }}
       initContainers:
+        - name: secure-tmp-volumes
+          image: "{{ .Values.dbInit.image.registry }}/{{ .Values.dbInit.image.repository }}:{{ .Values.dbInit.image.tag }}"
+          imagePullPolicy: {{ .Values.dbInit.image.imagePullPolicy }}
+          command: [
+            'sh',
+            '-c',
+            'chmod -t /tmp'
+          ]
+          envFrom:
+            {{- include "openproject.envFrom" . | nindent 12 }}
+          env:
+            {{- include "openproject.env" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.dbInit.resources | nindent 12 }}
+          volumeMounts:
+            {{- include "openproject.tmpVolumeMounts" . | indent 12 }}
+          {{- include "openproject.containerSecurityContext" . | indent 10 }}
         - name: wait-for-db
           {{- include "openproject.containerSecurityContext" . | indent 10 }}
           image: {{ include "openproject.image" . }}
